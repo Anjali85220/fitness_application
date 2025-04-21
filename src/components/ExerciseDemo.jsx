@@ -1,4 +1,3 @@
-// src/components/ExerciseDemo.jsx
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ExerciseDemo({ exercise, onClose }) {
@@ -11,7 +10,8 @@ export default function ExerciseDemo({ exercise, onClose }) {
         "Keep knees behind toes",
         "Maintain straight back"
       ],
-      video: "/squat-demo.mp4"
+      video: "/videos/squats.mp4",
+      fallback: "/images/squat-fallback.jpg"
     },
     pushups: {
       title: "Proper Push-up Technique",
@@ -21,7 +21,8 @@ export default function ExerciseDemo({ exercise, onClose }) {
         "Lower chest to floor",
         "Elbows at 45 degree angle"
       ],
-      video: "/pushup-demo.mp4"
+      video: "/videos/pushups.mp4",
+      fallback: "/images/pushup-fallback.jpg"
     }
   };
 
@@ -42,7 +43,25 @@ export default function ExerciseDemo({ exercise, onClose }) {
           onClick={(e) => e.stopPropagation()}
         >
           <h2>{demos[exercise].title}</h2>
-          <video src={demos[exercise].video} controls autoPlay loop />
+          
+          <div className="video-container">
+            <video 
+              src={demos[exercise].video} 
+              controls 
+              autoPlay 
+              loop
+              poster={demos[exercise].fallback}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                const fallback = document.createElement('img');
+                fallback.src = demos[exercise].fallback;
+                fallback.alt = `${exercise} demonstration`;
+                fallback.className = 'video-fallback';
+                e.target.parentNode.appendChild(fallback);
+              }}
+            />
+          </div>
+
           <div className="demo-tips">
             <h3>Key Points:</h3>
             <ul>
